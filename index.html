@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my valentine</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Link Generator Section -->
+        <div class="generator-section" id="generatorSection">
+            <h1>💝 Valentine Link Generator</h1>
+            <p class="subtitle">Create personalized Valentine's Day proposals!</p>
+
+            <form id="linkForm">
+                <div class="form-group">
+                    <label for="fromName">Your Name:</label>
+                    <input type="text" id="fromName" placeholder="e.g., John" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="toName">Valentine Name:</label>
+                    <input type="text" id="toName" placeholder="e.g., Sarah" required>
+                </div>
+
+                <button type="submit" class="btn">✨ Generate Link</button>
+            </form>
+
+            <div class="generated-link" id="generatedLink">
+                <h3 style="color: #667eea; margin-bottom: 10px;">🎉 Your Link is Ready!</h3>
+                <div class="link-container" id="linkDisplay"></div>
+                <button class="btn copy-btn" id="copyBtn">📋 Copy Link</button>
+                <button class="btn" id="createAnother">Create Another Link</button>
+            </div>
+        </div>
+
+        <!-- Valentine Popup Section -->
+        <div class="valentine-section" id="valentineSection">
+            <div class="valentine-content" id="valentineContent">
+                <div class="cat-container">
+                    <div class="heart-decoration">💖</div>
+                    <div class="cat-face">
+                        <div class="cat-ear-left"></div>
+                        <div class="cat-ear-right"></div>
+                        <div class="cat-eyes">
+                            <div class="cat-eye"></div>
+                            <div class="cat-eye"></div>
+                        </div>
+                        <div class="cat-nose"></div>
+                        <div class="cat-blush-left"></div>
+                        <div class="cat-blush-right"></div>
+                    </div>
+                </div>
+
+                <h2 class="valentine-title">
+                    <span id="toNameDisplay">Hey there</span>, will you be my valentine?
+                </h2>
+
+                <div class="button-container">
+                    <button class="valentine-btn yes-btn" id="yesBtn">Yes</button>
+                    <button class="valentine-btn no-btn" id="noBtn">No</button>
+                </div>
+
+                <p class="shy-message">"No" seems a bit shy 😈</p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <!-- Glitter Shower -->
+                <div class="glitter-container">
+                    <div class="glitter"></div>
+                    <div class="glitter</div>
+                    <div class=" glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                    <div class="glitter"></div>
+                </div>
+
+                <!-- GIPHY Cute Hugging Cats Sticker -->
+                <div class="kissing-animation" id="kissingAnimation">
+                    <img src="https://media.giphy.com/media/KmxmoHUGPDjfQXqGgv/giphy.gif" alt="Cute hugging cats">
+                </div>
+
+                <h2 class="success-text">Yay! 💖</h2>
+                <p class="success-subtitle"><span id="fromNameSuccess">They</span> will be so happy!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                from: params.get('from'),
+                to: params.get('to')
+            };
+        }
+
+        // Function to check and set special background
+        function checkSpecialBackground(fromName, toName) {
+            if (fromName && toName &&
+                fromName.toLowerCase().trim() === 'najil' &&
+                toName.toLowerCase().trim() === 'poo molll') {
+
+                document.body.style.backgroundImage = "url('assets/images/najil_bg.jpg')";
+                document.body.style.backgroundSize = "cover";
+                document.body.style.backgroundPosition = "center";
+                document.body.style.backgroundRepeat = "no-repeat";
+                document.body.style.backgroundAttachment = "fixed";
+            } else {
+                // Revert to default gradient if conditions not met
+                document.body.style.background = "linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 50%, #ffc0cb 100%)";
+            }
+        }
+
+        // Check if this is a valentine link or generator page
+        const params = getUrlParams();
+        if (params.from && params.to) {
+            // Show valentine section
+            document.getElementById('generatorSection').style.display = 'none';
+            document.getElementById('valentineSection').style.display = 'block';
+
+            // Set custom values
+            document.getElementById('toNameDisplay').textContent = decodeURIComponent(params.to);
+            document.getElementById('fromNameSuccess').textContent = decodeURIComponent(params.from);
+
+            // Check for special background - REMOVED for delayed effect
+            // checkSpecialBackground(decodeURIComponent(params.from), decodeURIComponent(params.to));
+
+            // Initialize moving No button
+            initializeNoButton();
+        } else {
+            // Show generator section
+            initializeGenerator();
+        }
+
+        // Generator functionality
+        function initializeGenerator() {
+            const form = document.getElementById('linkForm');
+            const generatedLinkDiv = document.getElementById('generatedLink');
+            const linkDisplay = document.getElementById('linkDisplay');
+            const copyBtn = document.getElementById('copyBtn');
+            const createAnotherBtn = document.getElementById('createAnother');
+            const fromNameInput = document.getElementById('fromName');
+            const toNameInput = document.getElementById('toName');
+
+            // live background check for generator - REMOVED for delayed effect
+            /*
+            function updatePreview() {
+                checkSpecialBackground(fromNameInput.value, toNameInput.value);
+            }
+
+            fromNameInput.addEventListener('input', updatePreview);
+            toNameInput.addEventListener('input', updatePreview);
+            */
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const fromName = document.getElementById('fromName').value;
+                const toName = document.getElementById('toName').value;
+
+                // Generate link (title is now static)
+                const baseUrl = window.location.origin + window.location.pathname;
+                const link = `${baseUrl}?from=${encodeURIComponent(fromName)}&to=${encodeURIComponent(toName)}`;
+
+                linkDisplay.textContent = link;
+                generatedLinkDiv.style.display = 'block';
+
+                // Scroll to link
+                generatedLinkDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            copyBtn.addEventListener('click', () => {
+                const link = linkDisplay.textContent;
+                navigator.clipboard.writeText(link).then(() => {
+                    copyBtn.textContent = '✅ Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 Copy Link';
+                    }, 2000);
+                });
+            });
+
+            createAnotherBtn.addEventListener('click', () => {
+                form.reset();
+                generatedLinkDiv.style.display = 'none';
+            });
+        }
+
+        // Valentine section functionality
+        function initializeNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            const valentineContent = document.getElementById('valentineContent');
+            const successMessage = document.getElementById('successMessage');
+
+            // Move No button on hover
+            noBtn.addEventListener('mouseenter', () => {
+                noBtn.classList.add('moving');
+
+                // Get viewport dimensions
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+
+                // Get button dimensions
+                const btnWidth = noBtn.offsetWidth;
+                const btnHeight = noBtn.offsetHeight;
+
+                // Calculate safe random position (avoiding edges)
+                const maxX = viewportWidth - btnWidth - 20;
+                const maxY = viewportHeight - btnHeight - 20;
+
+                const randomX = Math.max(20, Math.random() * maxX);
+                const randomY = Math.max(20, Math.random() * maxY);
+
+                noBtn.style.left = randomX + 'px';
+                noBtn.style.top = randomY + 'px';
+            });
+
+            // Also trigger on touch for mobile
+            noBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const event = new Event('mouseenter');
+                noBtn.dispatchEvent(event);
+            });
+
+            // Handle Yes button click
+            yesBtn.addEventListener('click', () => {
+                valentineContent.style.display = 'none';
+                successMessage.style.display = 'block';
+
+                // Check for special background on success
+                const params = getUrlParams();
+                if (params.from && params.to) {
+                    checkSpecialBackground(decodeURIComponent(params.from), decodeURIComponent(params.to));
+                }
+
+                // Show kissing teddies animation with delay
+                setTimeout(() => {
+                    document.getElementById('kissingAnimation').style.display = 'block';
+                }, 300);
+            });
+
+            // Prevent No button click (just in case someone is fast)
+            noBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const event = new Event('mouseenter');
+                noBtn.dispatchEvent(event);
+            });
+        }
+    </script>
+</body>
+
+</html>
