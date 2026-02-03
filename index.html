@@ -113,21 +113,22 @@
             };
         }
 
-        // Function to check and set special background
-        function checkSpecialBackground(fromName, toName) {
+        // Function to check and set special image
+        function checkSpecialFeature(fromName, toName) {
             if (fromName && toName &&
                 fromName.toLowerCase().trim() === 'najil' &&
                 toName.toLowerCase().trim() === 'poo molll') {
 
-                document.body.style.backgroundImage = "url('assets/images/najil_bg.jpg')";
-                document.body.style.backgroundSize = "cover";
-                document.body.style.backgroundPosition = "center";
-                document.body.style.backgroundRepeat = "no-repeat";
-                document.body.style.backgroundAttachment = "fixed";
-            } else {
-                // Revert to default gradient if conditions not met
-                document.body.style.background = "linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 50%, #ffc0cb 100%)";
+                // Replace the GIF with the custom photo
+                const kissingImg = document.querySelector('#kissingAnimation img');
+                if (kissingImg) {
+                    kissingImg.src = 'assets/images/najil_bg.jpg';
+                    // Add some styling to make the photo look good
+                    kissingImg.style.borderRadius = '15px';
+                    kissingImg.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+                }
             }
+            // Standard GIF is already default in HTML
         }
 
         // Check if this is a valentine link or generator page
@@ -140,9 +141,6 @@
             // Set custom values
             document.getElementById('toNameDisplay').textContent = decodeURIComponent(params.to);
             document.getElementById('fromNameSuccess').textContent = decodeURIComponent(params.from);
-
-            // Check for special background - REMOVED for delayed effect
-            // checkSpecialBackground(decodeURIComponent(params.from), decodeURIComponent(params.to));
 
             // Initialize moving No button
             initializeNoButton();
@@ -158,18 +156,6 @@
             const linkDisplay = document.getElementById('linkDisplay');
             const copyBtn = document.getElementById('copyBtn');
             const createAnotherBtn = document.getElementById('createAnother');
-            const fromNameInput = document.getElementById('fromName');
-            const toNameInput = document.getElementById('toName');
-
-            // live background check for generator - REMOVED for delayed effect
-            /*
-            function updatePreview() {
-                checkSpecialBackground(fromNameInput.value, toNameInput.value);
-            }
-
-            fromNameInput.addEventListener('input', updatePreview);
-            toNameInput.addEventListener('input', updatePreview);
-            */
 
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -246,10 +232,10 @@
                 valentineContent.style.display = 'none';
                 successMessage.style.display = 'block';
 
-                // Check for special background on success
+                // Check for special image on success
                 const params = getUrlParams();
                 if (params.from && params.to) {
-                    checkSpecialBackground(decodeURIComponent(params.from), decodeURIComponent(params.to));
+                    checkSpecialFeature(decodeURIComponent(params.from), decodeURIComponent(params.to));
                 }
 
                 // Show kissing teddies animation with delay
